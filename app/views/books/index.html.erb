@@ -1,5 +1,8 @@
-<% @books.each do |book| %>
-  <h2><%= link_to book.title, book_path(book) %></h2>
+<h1 class="current-category"><%= params[:category] %></h1>
+<% if @books.present? %>
+  <% @books.each do |book| %>
+    <h2><%= link_to book.title, book_path(book) %></h2>
+  <% end %>
+<% else %>
+  <h1> There are no books currently in this category, maybe update soon </h1>
 <% end %>
-
-<%= link_to "Add Book", new_book_path %>
