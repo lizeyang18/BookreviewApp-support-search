@@ -1,8 +1,14 @@
 <h1 class="current-category"><%= params[:category] %></h1>
 <% if @books.present? %>
-  <% @books.each do |book| %>
-    <h2><%= link_to book.title, book_path(book) %></h2>
-  <% end %>
+  <div class="row">
+    <% @books.each do |book| %>
+      <div class="col-md-3">
+        <a href="/books/<%= book.id %>">
+          <%= image_tag book.book_img.url(:book_index), class: "book-index" %>
+        </a>
+      </div>
+    <% end %>
+  </div>
 <% else %>
   <h1> There are no books currently in this category, maybe update soon </h1>
 <% end %>
