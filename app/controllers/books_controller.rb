@@ -3,11 +3,15 @@ class BooksController < ApplicationController
   before_action :find_book, only: [:show, :edit, :update, :destroy]
 
   def index
-    if params[:category].blank?
+    if (params[:category].blank? && params[:term].blank?)
       @books = Book.all.order("created_at DESC")
-    else
+    end
+    if params[:category]
       @category_id = Category.find_by(name: params[:category]).id
       @books = Book.where(category_id: @category_id).order("created_at DESC")
+    end
+    if params[:term]
+      @books = Book.title_like(params[:term])
     end
   end
 

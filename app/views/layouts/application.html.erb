@@ -26,6 +26,12 @@
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
+          <li class="search">
+            <%= simple_form_for books_path, method: :get do %>
+              <%= text_field_tag 'term', params[:term], placeholder: "Enter name of book" %>
+              <%= submit_tag 'Search!' %>
+            <% end %>
+          </li>
 
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Categories <b class="caret"></b></a>
