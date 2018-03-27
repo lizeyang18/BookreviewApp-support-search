@@ -17,10 +17,10 @@
           <%= link_to "Book Review", root_path, class: "navbar-brand" %>
         </div>
         <ul class="nav navbar-nav">
-          <li><%= link_to "Sign Up", new_user_registration_path %></li>
           <% if user_signed_in? %>
             <li><%= link_to "Sign Out", destroy_user_session_path, method: :delete %></li>
           <% else %>
+            <li><%= link_to "Sign Up", new_user_registration_path %></li>
             <li><%= link_to "Log In", new_user_session_path %></li>
           <% end %>
         </ul>
@@ -43,18 +43,19 @@
               <% end %>
             </ul>
           </li>
-
           <% if user_signed_in? %>
-            <li><%= link_to "Add Book", new_book_path %></li>
+            <% if current_user.admin %>
+              <li><%= link_to "Add Book", new_book_path %></li>
+            <% end %>
           <% end %>
         </ul>
       </div>
 
     </nav>
-
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
     <div class="container">
+      <% flash.each do |message_type, message| %>
+        <div class="alert alert-<%= message_type %>"><%= message %></div>
+      <% end %>
       <%= yield %>
     </div>
   </body>

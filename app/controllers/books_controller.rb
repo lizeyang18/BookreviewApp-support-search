@@ -1,6 +1,7 @@
 class BooksController < ApplicationController
   before_action :authenticate_user!, only: [:new, :edit]
   before_action :find_book, only: [:show, :edit, :update, :destroy]
+  before_action :is_admin?, except: [:index, :show]
 
   def index
     if (params[:category].blank? && params[:term].blank?)
@@ -32,8 +33,10 @@ class BooksController < ApplicationController
     @book = current_user.books.build(book_params)
     @book.category_id = params[:category_id]
     if @book.save
+      flash[:success] = "Successfully"
       redirect_to root_path
     else
+      flash[:danger] = "We're sorry. Something wrong, you should try again"
       render "new"
     end
   end
@@ -45,15 +48,22 @@ class BooksController < ApplicationController
   def update
     @book.category_id = params[:category_id]
     if @book.update(book_params)
+      flash[:success] = "Successfully"
       redirect_to book_path(@book)
     else
+      flash[:danger] = "We're sorry. Something wrong, you should try again"
       render "edit"
     end
   end
 
   def destroy
-    @book.destroy
-    redirect_to root_path
+    if @book.destroy
+      flash[:success] = "Successfully"
+      redirect_to root_path
+    else
+      flash[:danger] = "We're sorry. Something wrong, you should try again"
+      redirect_to root_path
+    end
   end
 
   private
@@ -63,6 +73,10 @@ class BooksController < ApplicationController
     end
 
     def find_book
-      @book = Book.find(params[:id])
+      @book = Book.find_by(id: params[:id])
+      unless @book
+        flash[:danger] = "We can't find this book, you should try later"
+        redirect_to root_path
+      end
     end
 end
