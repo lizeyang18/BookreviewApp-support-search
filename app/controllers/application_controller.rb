@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   def is_admin?
    # unless current_user.admin?
      # flash[:danger] = "Oops!! You don't have privilege to to this action"
-      redirect_to root_path
+     # redirect_to root_path
     #end
   end
 end
